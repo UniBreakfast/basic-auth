@@ -11,9 +11,16 @@ function handleSubmit(e) {
   const { login, password } = getFormData()
 
   if (check(login, password)) {
-    goIn();
+    goIn(login);
   } else {
     complaint('Incorrect login or password');
+  }
+}
+
+function getFormData() {
+  return {
+    login: loginForm.login.value,
+    password: loginForm.password.value
   }
 }
 
@@ -21,8 +28,8 @@ function goOut() {
   location.href = '/lobby.html';
 }
 
-function goIn() {
-  location.href = '/profile.html';
+function goIn(userName) {
+  location.href = '/profile.html?user=' + userName;
 }
 
 function check(login, password) {
