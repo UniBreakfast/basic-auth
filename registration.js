@@ -1,33 +1,86 @@
 const regForm = document.forms[0];
 
+regForm.addEventListener('submit', handleSubmit)
 
-function makePassword() {
-  const login = regForm.login.value;
-  const password = regForm.password.value;
-  const confirm = regForm.confirm.value;
+regForm.cancel.addEventListener('click', goOut);
 
-  if (password === confirm && password.length >= 8) {
-    users.push({ login, password })
-    saveUsers();
-    alert('Registration successful, now you can login');
-    regForm.reset();
-    location.href = '/log-in.html';
-        console.log(users);
-
-  } else {
-    regForm.reset();
-    alert('Passwords do not match');
-  }
-
-
-}
-
-regForm.addEventListener('submit', (e) => {
+function handleSubmit(e) {
   e.preventDefault();
 
-  makePassword();
-});
+  const { login, password, confirmPassword } = getFormData()
 
-regForm.cancel.addEventListener('click', () => {
+  try {
+    if (password !== confirmPassword) {
+      throw { problem: 'passwords do not match' }
+    }
+
+    const problems = validate({ login, password })
+
+    if (problems) {
+      throw { problem: problems.join(', ') }
+    }
+
+    if (isOccupied(login)) {
+      throw { problem: 'user already exists' }
+    }
+
+    registerUser(login, password)
+    saveUsers()
+    report('User registered successfully')
+    setTimeout(goIn, 1000)
+  } catch (error) {
+    if (!error.problem) throw error
+
+    complaint(error.problem)
+  }
+}
+
+function getFormData() {
+  return {
+    login: regForm.login.value,
+    password: regForm.password.value,
+    confirmPassword: regForm.confirm.value
+  }
+}
+
+function registerUser(login, password) {
+  users.push({ login, password })
+}
+
+function isOccupied(login) {
+  return users.some(user => user.login === login)
+}
+
+function report(message) {
+  alert(message)
+}
+
+function goIn() {
+  location.href = '/log-in.html';
+}
+
+function goOut() {
   location.href = '/lobby.html';
-});
+}
+
+function complaint(message) {
+  alert(message)
+}
+
+function validate({ login, password }) {
+  const problems = [];
+
+  if (login.length < 3) {
+    problems.push('login must be at least 3 characters long')
+  }
+
+  if (login.includes(' ')) {
+    problems.push('login must not contain spaces')
+  }
+
+  if (password.length < 6) {
+    problems.push('password must be at least 6 characters long')
+  }
+
+  return problems.length ? problems : null
+}

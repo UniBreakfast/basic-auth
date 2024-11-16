@@ -1,24 +1,21 @@
 const loginForm = document.forms[0];
-// users = JSON.parse(localStorage.getItem('users'));
 
 
-loginForm.addEventListener('submit', (e) => {
+loginForm.addEventListener('submit', handleSubmit);
+
+loginForm.cancel.addEventListener('click', goOut);
+
+function handleSubmit(e) {
   e.preventDefault();
 
-  const login = loginForm.login.value;
-  const password = loginForm.password.value;
-
+  const { login, password } = getFormData()
 
   if (check(login, password)) {
     goIn();
   } else {
-    complaint('Invalid login or password');
+    complaint('Incorrect login or password');
   }
-});
-
-loginForm.cancel.addEventListener('click', () => {
-  goOut();
-});
+}
 
 function goOut() {
   location.href = '/lobby.html';
