@@ -1,6 +1,5 @@
 const loginForm = document.forms[0];
 
-
 loginForm.addEventListener('submit', handleSubmit);
 
 loginForm.cancel.addEventListener('click', goOut);
@@ -25,11 +24,11 @@ function getFormData() {
 }
 
 function goOut() {
-  location.href = '/lobby.html';
+  location.href = 'lobby.html';
 }
 
 function goIn(userName) {
-  location.href = '/profile.html?user=' + userName;
+  location.href = 'profile.html?user=' + userName;
 }
 
 function check(login, password) {

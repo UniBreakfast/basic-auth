@@ -56,11 +56,11 @@ function report(message) {
 }
 
 function goIn() {
-  location.href = '/log-in.html';
+  location.href = 'log-in.html';
 }
 
 function goOut() {
-  location.href = '/lobby.html';
+  location.href = 'lobby.html';
 }
 
 function complaint(message) {

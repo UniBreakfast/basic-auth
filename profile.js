@@ -19,5 +19,5 @@ function doesExists(userName) {
 }
 
 function goOut() {
-  location.href = '/lobby.html';
+  location.href = 'lobby.html';
 }
